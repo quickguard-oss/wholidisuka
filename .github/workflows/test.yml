@@ -1,13 +1,16 @@
-name: 'Release'
+name: 'Test'
 
 on:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
-  goreleaser:
-    name: 'GoReleaser'
+  test:
+    name: 'Test'
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Checkout'
@@ -24,18 +27,19 @@ jobs:
         uses: 'actions/cache@v2'
         with:
           path: '~/go/pkg/mod/'
-          key: "${{ runner.os }}-goreleaser-go-modules-${{ hashFiles('**/go.sum') }}"
+          key: "${{ runner.os }}-test-go-modules-${{ hashFiles('**/go.sum') }}"
           restore-keys: |
-            ${{ runner.os }}-goreleaser-go-modules-
+            ${{ runner.os }}-test-go-modules-
 
       - name: 'Set up Go modules'
         run: |
           go mod tidy -v
 
-      - name: 'Run GoReleaser'
-        uses: 'goreleaser/goreleaser-action@v2'
-        with:
-          version: 'latest'
-          args: 'release --rm-dist'
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - name: 'Run build'
+        run: |
+          go build -v
+          ./wholidisuka -v
+
+      - name: 'Run test'
+        run: |
+          go test -v ./...
