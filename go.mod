@@ -3,7 +3,7 @@ module github.com/quickguard-oss/wholidisuka
 go 1.17
 
 require (
-	github.com/spf13/cobra v1.3.0
+	github.com/spf13/cobra v1.4.0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/yaml.v2 v2.4.0
 )
