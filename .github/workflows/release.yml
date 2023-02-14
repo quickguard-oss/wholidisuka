@@ -25,6 +25,10 @@ jobs:
           check-latest: true
           cache: true
 
+      - name: 'Install go-licenses'
+        run: |
+          go install github.com/google/go-licenses@v1.6.0
+
       - name: 'Run GoReleaser'
         uses: 'goreleaser/goreleaser-action@v4.2.0'
         with:

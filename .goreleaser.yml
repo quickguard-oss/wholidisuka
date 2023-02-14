@@ -2,11 +2,12 @@
 
 before:
   hooks:
-    - |
-      go mod tidy -v
+    - 'go mod tidy -v'
+    - 'go-licenses save ./cmd/wholidisuka/ --force --save_path ./licenses/'
 
 builds:
-  - env:
+  - main: './cmd/wholidisuka/'
+    env:
       - 'CGO_ENABLED=0'
     goos:
       - 'darwin'
@@ -15,10 +16,6 @@ builds:
     goarch:
       - 'amd64'
       - 'arm64'
-    ldflags:
-      - '-s'
-      - '-w'
-      - '-X github.com/quickguard-oss/wholidisuka/cmd.version={{ .Tag }}'
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 archives:
@@ -27,6 +24,10 @@ archives:
     format_overrides:
       - goos: 'windows'
         format: 'zip'
+    files:
+      - './LICENSE'
+      - './README.md'
+      - './licenses/**/*'
 
 checksum:
   name_template: 'checksums.txt'
