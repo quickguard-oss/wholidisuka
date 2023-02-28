@@ -1,34 +1,34 @@
 package holidays
 
 import (
-	"io/ioutil"
+	"os"
 	"time"
 
 	"gopkg.in/yaml.v2"
 )
 
-type customCalendar struct {
+type customHolidays struct {
 	customFile string
 }
 
-func newCustomCalendar(customFile string) *customCalendar {
-	return &customCalendar{
+func newCustomHolidays(customFile string) customHolidays {
+	return customHolidays{
 		customFile: customFile,
 	}
 }
 
-func (c *customCalendar) lookupCustomCalendar(t time.Time) (ListMatch, error) {
+func (c customHolidays) lookup(t time.Time) (LookupResult, error) {
 	if c.customFile == "" {
 		return Undefined, nil
 	}
 
-	list, err := c.readCustomYml()
+	list, err := c.readData()
 
 	if err != nil {
 		return Error, err
 	}
 
-	v, ok := lookup(list, t)
+	v, ok := list[t.Format("2006-01-02")]
 
 	if !ok {
 		return Undefined, nil
@@ -41,10 +41,10 @@ func (c *customCalendar) lookupCustomCalendar(t time.Time) (ListMatch, error) {
 	return Holiday, nil
 }
 
-func (c *customCalendar) readCustomYml() (*map[string]interface{}, error) {
+func (c customHolidays) readData() (map[string]interface{}, error) {
 	var list map[string]interface{}
 
-	raw, err := ioutil.ReadFile(c.customFile)
+	raw, err := os.ReadFile(c.customFile)
 
 	if err != nil {
 		return nil, err
@@ -54,5 +54,5 @@ func (c *customCalendar) readCustomYml() (*map[string]interface{}, error) {
 		return nil, err
 	}
 
-	return &list, nil
+	return list, nil
 }
