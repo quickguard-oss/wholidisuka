@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 type customHolidays struct {
@@ -41,8 +41,8 @@ func (c customHolidays) lookup(t time.Time) (LookupResult, error) {
 	return Holiday, nil
 }
 
-func (c customHolidays) readData() (map[string]interface{}, error) {
-	var list map[string]interface{}
+func (c customHolidays) readData() (map[string]any, error) {
+	var list map[string]any
 
 	raw, err := os.ReadFile(c.customFile)
 

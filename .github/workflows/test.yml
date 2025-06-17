@@ -1,38 +1,38 @@
-name: 'Test'
+name: "Test"
 
 on:
   push:
     branches:
-      - 'main'
+      - "main"
   pull_request:
     branches:
-      - 'main'
+      - "main"
 
 permissions: {}
 
 jobs:
   test:
-    name: 'Test'
-    runs-on: 'ubuntu-latest'
+    name: "Test"
+    runs-on: "ubuntu-latest"
     steps:
-      - name: 'Checkout'
-        uses: 'actions/checkout@v4.2.2'
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
 
-      - name: 'Set up Go'
-        uses: 'actions/setup-go@v5.5.0'
+      - name: "Set up Go"
+        uses: "actions/setup-go@v5"
         with:
-          go-version-file: './go.mod'
-          check-latest: true
+          go-version-file: "./go.mod"
 
-      - name: 'Set up Go modules'
+      - name: "Set up Go modules"
         run: |
           go mod tidy -v
 
-      - name: 'Run build'
+      - name: "Run build"
         run: |
-          go build -v ./cmd/wholidisuka/
+          make build
+
           ./wholidisuka -version
 
-      - name: 'Run test'
+      - name: "Run test"
         run: |
-          go test -v ./...
+          make test

@@ -1,12 +1,14 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
-
-before:
-  hooks:
-    - 'go mod tidy -v'
-    - 'go-licenses save ./cmd/wholidisuka/ --force --save_path ./licenses/'
+---
+version: 2
 
 builds:
   - main: './cmd/wholidisuka/'
+    flags:
+      - '-v'
+    ldflags:
+      - '-s'
+      - '-w'
     env:
       - 'CGO_ENABLED=0'
     goos:
@@ -19,11 +21,14 @@ builds:
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 archives:
-  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ if eq .Arch "amd64" }}x86_64{{ else }}{{ .Arch }}{{ end }}'
-    format: 'tar.xz'
+  - formats:
+      - 'tar.xz'
+    name_template: |-
+      {{ .ProjectName }}_{{ .Os }}_{{ if eq .Arch "amd64" }}x86_64{{ else }}{{ .Arch }}{{ end }}
     format_overrides:
       - goos: 'windows'
-        format: 'zip'
+        formats:
+          - 'zip'
     files:
       - './LICENSE'
       - './README.md'

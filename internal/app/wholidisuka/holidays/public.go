@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 
 	"github.com/quickguard-oss/wholidisuka/internal/app/wholidisuka/cache"
 	"github.com/quickguard-oss/wholidisuka/internal/app/wholidisuka/log"
@@ -45,8 +45,8 @@ func (p publicHolidays) lookup(t time.Time) (LookupResult, error) {
 	return Holiday, nil
 }
 
-func (p publicHolidays) readData() (map[string]interface{}, error) {
-	var list map[string]interface{}
+func (p publicHolidays) readData() (map[string]any, error) {
+	var list map[string]any
 
 	raw, err := p.readCache()
 

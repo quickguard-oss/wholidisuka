@@ -84,7 +84,7 @@ Exit codes:
 Options:
 `
 
-		fmt.Fprintf(
+		fmt.Fprint(
 			flag.CommandLine.Output(),
 			header+usage,
 		)

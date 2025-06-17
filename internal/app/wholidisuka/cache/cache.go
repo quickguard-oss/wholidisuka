@@ -86,7 +86,7 @@ func (c cache) path(key string) string {
 	return filepath.Join(c.dir, key)
 }
 
-func (c cache) printf(format string, a ...interface{}) {
+func (c cache) printf(format string, a ...any) {
 	if !c.silent {
 		fmt.Printf(format, a...)
 	}
