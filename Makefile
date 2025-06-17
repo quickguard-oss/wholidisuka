@@ -19,6 +19,9 @@ build: clean
 	@echo 'Building wholidisuka binary...'
 
 	go build \
+	  -ldflags "\
+	    -X main.version=$$( git describe --tags --always --dirty 2> /dev/null || echo 'dev' ) \
+	  " \
 	  -v \
 	  ./cmd/wholidisuka/
 
